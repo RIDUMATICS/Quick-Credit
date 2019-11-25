@@ -1,0 +1,25 @@
+{
+  "name": "quick-credit",
+  "version": "1.0.0",
+  "description": "Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIDUMATICS/Quick-Credit.git"
+  },
+  "keywords": [
+    "REST_API",
+    "NodeJS",
+    "REACT",
+    "MERN"
+  ],
+  "author": "Ridwan Onikoyi <ridwanonikoyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RIDUMATICS/Quick-Credit/issues"
+  },
+  "homepage": "https://github.com/RIDUMATICS/Quick-Credit#readme"
+}
