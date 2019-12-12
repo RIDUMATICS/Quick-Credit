@@ -1,12 +1,17 @@
 import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
 
-const generateToken = ({
-  id, firstName, lastName, email, address, status, isAdmin,
-}) => {
+
+config();
+
+const generateToken = ({ email }) => {
   const token = jwt.sign(
     {
-      id, firstName, lastName, email, address, status, isAdmin,
-    }, process.env.secretOrPrivateKey, { expiresIn: 3600 },
+      iss: 'Quick-Credit',
+      sub: email,
+      iat: new Date().getTime(),
+      exp: new Date().setDate(new Date().getDate() + 1),
+    }, process.env.secretOrPrivateKey,
   );
   return token;
 };

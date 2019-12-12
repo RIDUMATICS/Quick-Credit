@@ -21,7 +21,7 @@ class userService {
         return errorResponse(409, 'Email has already been taken.');
       }
       email = email.toLowerCase();
-      const salt = await bcrypt.genSalt(+process.env.SALT)
+      const salt = await bcrypt.genSalt(+process.env.SALT);
       password = await bcrypt.hash(password, salt);
       const user = await User.create({
         email,
