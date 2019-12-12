@@ -2,20 +2,20 @@ import express from 'express';
 import { config } from 'dotenv';
 import morgan from 'morgan';
 import { log } from 'debug';
+import passport from 'passport';
+import passportConfig from './config/passport';
 import userRouter from './route/api/v1/user.route';
 
 config();
-
 const app = express();
-
-app.use(morgan('dev'));
-
 const PORT = process.env.PORT || 4000;
 
+app.use(passport.initialize());
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.get('/', (req, res) => {
+app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.send('API IS WORKING');
 });
 
