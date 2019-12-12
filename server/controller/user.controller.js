@@ -6,6 +6,12 @@ const userController = {
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.status).send(err));
   },
+
+  loginUser(req, res) {
+    userService.loginUser(req.body)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.status).send(err));
+  },
 };
 
 export default userController;
