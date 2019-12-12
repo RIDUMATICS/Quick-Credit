@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+
+config();
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -11,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     password: DataTypes.STRING,
     address: DataTypes.STRING,
+    signMethod: {
+      type: DataTypes.ENUM,
+      values: ['local', 'google', 'facebook'],
+    },
     status: {
       type: DataTypes.ENUM,
       values: ['unverified', 'verified'],

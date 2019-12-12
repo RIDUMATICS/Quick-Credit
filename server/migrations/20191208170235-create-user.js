@@ -23,6 +23,10 @@ module.exports = {
     },
     password: {
       type: Sequelize.STRING,
+    },
+    signMethod: {
+      type: Sequelize.ENUM,
+      values: ['local', 'google', 'facebook'],
       allowNull: false,
     },
     address: {
