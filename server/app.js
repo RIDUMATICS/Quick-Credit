@@ -19,7 +19,7 @@ app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.send('API IS WORKING');
 });
 
-app.use('/api/v1/auth', userRouter);
+app.use('/api/v1', userRouter);
 
 app.listen(PORT, () => {
   log(`APP LISTENING ON ${PORT} `);

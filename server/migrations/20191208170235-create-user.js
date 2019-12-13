@@ -31,7 +31,6 @@ module.exports = {
     },
     address: {
       type: Sequelize.STRING,
-      allowNull: false,
     },
     status: {
       type: Sequelize.ENUM,
