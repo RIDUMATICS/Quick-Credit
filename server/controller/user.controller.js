@@ -12,6 +12,11 @@ const userController = {
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.status).send(err));
   },
+
+  socialSign(req, res) {
+    const resp = userService.socialSign(req.user.dataValues);
+    res.status(resp.status).json(resp);
+  },
 };
 
 export default userController;

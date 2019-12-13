@@ -53,6 +53,11 @@ class userService {
       return errorResponse(500, err);
     }
   }
+
+  static socialSign(user) {
+    console.log(user);
+    return successResponse(200, { token: `Bearer ${generateToken(user)}` });
+  }
 }
 
 export default userService;
