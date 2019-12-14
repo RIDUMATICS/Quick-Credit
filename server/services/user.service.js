@@ -33,7 +33,7 @@ class userService {
         status: 'unverified',
         isAdmin: false,
       });
-      return successResponse(201, { token: `Bearer ${generateToken(user)}` });
+      return successResponse(201, { token: generateToken(user) });
     } catch (err) {
       return errorResponse(500, err);
     }
@@ -48,15 +48,14 @@ class userService {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return errorResponse(401, 'The email and password you entered did not match our records. Please double-check and try again.');
 
-      return successResponse(200, { token: `Bearer ${generateToken(user)}` });
+      return successResponse(200, { token: generateToken(user) });
     } catch (err) {
       return errorResponse(500, err);
     }
   }
 
   static socialSign(user) {
-    console.log(user);
-    return successResponse(200, { token: `Bearer ${generateToken(user)}` });
+    return successResponse(200, { token: generateToken(user) });
   }
 }
 
