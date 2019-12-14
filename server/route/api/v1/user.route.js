@@ -11,5 +11,6 @@ userRouter.post('/auth/login', userController.loginUser);
 
 userRouter.post('/oauth/google', passport.authenticate('googleToken', { session: false }), userController.socialSign);
 
+userRouter.post('/oauth/facebook', passport.authenticate('facebookToken', { session: false }), userController.socialSign);
 
 export default userRouter;
