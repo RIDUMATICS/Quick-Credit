@@ -2,7 +2,6 @@ import { config } from 'dotenv';
 import bcrypt from 'bcryptjs';
 import { successResponse, errorResponse } from '../helper/response';
 import { User } from '../models';
-import generateToken from '../helper/generateToken';
 
 config();
 
@@ -11,19 +10,15 @@ class userService {
     email, firstName, lastName, password, address,
   }) {
     try {
-      const count = await User.count({
-        where: {
-          email: email.toLowerCase(),
-        },
-      });
+      email = email.toLowerCase();
+      const user = await User.findByPk(email);
 
-      if (count) {
+      if (user) {
         return errorResponse(409, 'Email has already been taken.');
       }
-      email = email.toLowerCase();
       const salt = await bcrypt.genSalt(+process.env.SALT);
       password = await bcrypt.hash(password, salt);
-      const user = await User.create({
+      await User.create({
         email,
         firstName,
         lastName,
@@ -33,7 +28,7 @@ class userService {
         status: 'unverified',
         isAdmin: false,
       });
-      return successResponse(201, { token: generateToken(user) });
+      return successResponse(201, { user: { email, firstName, lastName } });
     } catch (err) {
       return errorResponse(500, err);
     }
@@ -47,15 +42,16 @@ class userService {
       // check if user password is correct
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return errorResponse(401, 'The email and password you entered did not match our records. Please double-check and try again.');
-
-      return successResponse(200, { token: generateToken(user) });
+      const { firstName, lastName } = user;
+      return successResponse(200, { user: { email: user.email, firstName, lastName } });
     } catch (err) {
       return errorResponse(500, err);
     }
   }
 
   static socialSign(user) {
-    return successResponse(200, { token: generateToken(user) });
+    const { email, firstName, lastName } = user;
+    return successResponse(200, { user: { email, firstName, lastName } });
   }
 }
 
