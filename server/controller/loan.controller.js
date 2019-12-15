@@ -10,6 +10,12 @@ class loanController {
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.status).send(err));
   }
+
+  static getLoanRepayment(req, res ) {
+    loanService.getLoanRepayment(req.params)
+      .then(resp => res.status(200).json(resp))
+      .catch(err => res.status(500).json(err));
+  }
 }
 
 export default loanController;

@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', userRouter);
 app.use('/api/v1/admin', adminRouter);
-app.use('/api/v1/loan', loanRouter);
+app.use('/api/v1/loans', loanRouter);
 
 app.listen(PORT, () => {
   log(`APP LISTENING ON ${PORT} `);

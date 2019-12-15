@@ -1,4 +1,4 @@
-import { Loan } from '../models';
+import { Loan, Repayment } from '../models';
 import { successResponse, errorResponse } from '../helper/response';
 
 class loanService {
@@ -39,6 +39,28 @@ class loanService {
         interest,
       });
       return successResponse(201, newLoan);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async getLoanRepayment({ id }) {
+    try {
+      const loan = await Loan.findByPk(id, {
+        include: [{
+          model: Repayment,
+        }],
+      });
+
+      if (!loan.Repayment) return errorResponse(400, 'Repayment not submitted');
+
+      const {
+        paymentInstallment, interest, tenor, balance,
+      } = loan;
+      const { loanId, amount, createdOn } = loan.Repayment;
+      return successResponse(200, {
+        loanId, createdOn, monthlyInstallment: paymentInstallment, interest, amount, tenor, balance,
+      });
     } catch (error) {
       return errorResponse(500, error);
     }
