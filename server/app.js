@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import passportConfig from './config/passport';
 import userRouter from './route/api/v1/user.route';
 import adminRouter from './route/api/v1/admin.route';
+import loanRouter from './route/api/v1/loan.route';
 
 config();
 const app = express();
@@ -19,12 +20,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/', (req, res) => {
   res.send('API IS WORKING');
 });
 
 app.use('/api/v1', userRouter);
 app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1/loan', loanRouter);
 
 app.listen(PORT, () => {
   log(`APP LISTENING ON ${PORT} `);
