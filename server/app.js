@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 // eslint-disable-next-line no-unused-vars
 import passportConfig from './config/passport';
 import userRouter from './route/api/v1/user.route';
+import adminRouter from './route/api/v1/admin.route';
 
 config();
 const app = express();
@@ -23,6 +24,7 @@ app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
 });
 
 app.use('/api/v1', userRouter);
+app.use('/api/v1/admin', adminRouter);
 
 app.listen(PORT, () => {
   log(`APP LISTENING ON ${PORT} `);

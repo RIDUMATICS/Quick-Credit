@@ -1,38 +1,36 @@
-import userService from '../services/user.service';
-import { successResponse } from '../helper/response';
+import adminService from '../services/admin.service';
 import setCookie from '../helper/setCookie';
+import { successResponse } from '../helper/response';
 
-
-const userController = {
-  addUser(req, res) {
-    userService.addUser(req.body)
+class adminController {
+  static addAdmin(req, res) {
+    adminService.addAdmin(req.body)
       .then((resp) => {
-        if (resp.data) { setCookie(res, resp.data); }
-        return res.status(resp.status).json(resp);
+        res.status(resp.status).json(resp);
       })
       .catch((err) => res.status(err.status).send(err));
-  },
+  }
 
-  loginUser(req, res) {
-    userService.loginUser(req.body)
+  static loginAdmin(req, res) {
+    adminService.loginAdmin(req.body)
       .then((resp) => {
         // if response is successful and contains user data
         if (resp.data) { setCookie(res, resp.data); }
         return res.status(resp.status).json(resp);
       })
       .catch((err) => res.status(err.status).send(err));
-  },
+  }
 
-  socialSign(req, res) {
-    const resp = userService.socialSign(req.user.dataValues);
+  static socialSign(req, res) {
+    const resp = adminService.socialSign(req.user.dataValues);
     if (resp.data) { setCookie(res, resp.data); }
     return res.status(resp.status).json(resp);
-  },
+  }
 
-  signOut(req, res) {
+  static signOut(req, res) {
     res.clearCookie('jwt_token');
     res.status(204).json(successResponse(204, { success: true }));
-  },
-};
+  }
+}
 
-export default userController;
+export default adminController;
