@@ -58,9 +58,8 @@ passport.use('facebookToken', new FacebookTokenStrategy({
 }, async (req, accessToken, refreshToken, profile, done) => {
   try {
     const existingUser = await User.findByPk(profile.emails[0].value.toLowerCase());
-    if (existingUser) {
-      return done(null, existingUser);
-    }
+    if (existingUser) { return done(null, existingUser); }
+
     const newUser = await User.create({
       email: profile.emails[0].value.toLowerCase(),
       firstName: profile.name.givenName,
