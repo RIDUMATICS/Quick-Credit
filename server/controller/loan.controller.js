@@ -11,10 +11,16 @@ class loanController {
       .catch((err) => res.status(err.status).send(err));
   }
 
-  static getLoanRepayment(req, res ) {
+  static getLoanRepayment(req, res) {
     loanService.getLoanRepayment(req.params)
-      .then(resp => res.status(200).json(resp))
-      .catch(err => res.status(500).json(err));
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
+  }
+
+  static getAllLoans(req, res) {
+    loanService.getAllLoans()
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
   }
 }
 
