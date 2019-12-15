@@ -1,0 +1,48 @@
+import { Loan } from '../models';
+import { successResponse, errorResponse } from '../helper/response';
+
+class loanService {
+  static async createLoan(userEmail, { tenor, amount }) {
+    try {
+      amount = +amount; // convert string to integer
+      tenor = +tenor; // convert string to integer
+
+      const pendingLoan = await Loan.count({
+        where: {
+          user: userEmail,
+          status: 'pending',
+        },
+      });
+      const unpaidLoan = await Loan.count({
+        where: {
+          user: userEmail,
+          status: 'approved',
+          repaid: false,
+        },
+      });
+      if (unpaidLoan) return errorResponse(400, 'Still have an unpaid loan');
+      if (pendingLoan) return errorResponse(400, 'Still have a pending loan');
+      if (tenor > 12 || tenor < 3) return errorResponse(400, 'Tenor is between 3 to 12 months');
+
+      const interest = (5 * amount) / 100;
+      const paymentInstallment = (amount + interest) / tenor;
+      const balance = paymentInstallment * tenor;
+      const newLoan = await Loan.create({
+        user: userEmail,
+        createdOn: new Date().getTime(),
+        status: 'pending',
+        repaid: false,
+        tenor,
+        amount,
+        paymentInstallment,
+        balance,
+        interest,
+      });
+      return successResponse(201, newLoan);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+}
+
+export default loanService;
