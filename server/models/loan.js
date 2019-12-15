@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'user',
       targetKey: 'email',
     });
+    Loan.hasOne(models.Repayment, {
+      foreignKey: 'loanId',
+    });
   };
   return Loan;
 };
