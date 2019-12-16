@@ -18,10 +18,12 @@ class loanController {
   }
 
   static getAllLoans(req, res) {
-    loanService.getAllLoans()
+    loanService.getAllLoans(req.query)
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }
+
+
 }
 
 export default loanController;
