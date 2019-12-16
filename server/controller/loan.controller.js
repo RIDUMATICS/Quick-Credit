@@ -23,7 +23,11 @@ class loanController {
       .catch((err) => res.status(err.json).json(err));
   }
 
-
+  static getLoanById(req, res) {
+    loanService.getLoanById(req.params)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
+  }
 }
 
 export default loanController;

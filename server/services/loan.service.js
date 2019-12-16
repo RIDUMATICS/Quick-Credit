@@ -68,7 +68,7 @@ class loanService {
 
   static async getAllLoans(query) {
     try {
-      if (query.status || query.repaid) { return this.getLoansByRepaid(query) }
+      if (query.status || query.repaid) return this.getLoansByRepaid(query);
       const loans = await Loan.findAll();
       return successResponse(200, loans);
     } catch (error) {
@@ -77,7 +77,6 @@ class loanService {
   }
 
   static async getLoansByRepaid({ status, repaid }) {
-    console.log(status, repaid);
     try {
       // check if query is good
       if (status !== 'approved' || (repaid !== 'true' && repaid !== 'false')) {
@@ -90,6 +89,16 @@ class loanService {
         },
       });
       return successResponse(200, loans);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async getLoanById({ id }) {
+    try {
+      const loan = await Loan.findByPk(id);
+      if (loan === null) return errorResponse(404, 'Loan not found');
+      return successResponse(200, loan);
     } catch (error) {
       return errorResponse(500, error);
     }
