@@ -65,6 +65,15 @@ class loanService {
       return errorResponse(500, error);
     }
   }
+
+  static async getAllLoans() {
+    try {
+      const loans = await Loan.findAll();
+      return successResponse(200, loans);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
 }
 
 export default loanService;
