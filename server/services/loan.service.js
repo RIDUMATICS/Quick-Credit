@@ -66,9 +66,29 @@ class loanService {
     }
   }
 
-  static async getAllLoans() {
+  static async getAllLoans(query) {
     try {
+      if (query.status || query.repaid) { return this.getLoansByRepaid(query) }
       const loans = await Loan.findAll();
+      return successResponse(200, loans);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async getLoansByRepaid({ status, repaid }) {
+    console.log(status, repaid);
+    try {
+      // check if query is good
+      if (status !== 'approved' || (repaid !== 'true' && repaid !== 'false')) {
+        return errorResponse(400, 'Query not supported');
+      }
+      const loans = await Loan.findAll({
+        where: {
+          status,
+          repaid,
+        },
+      });
       return successResponse(200, loans);
     } catch (error) {
       return errorResponse(500, error);
