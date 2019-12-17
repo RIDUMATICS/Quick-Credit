@@ -28,6 +28,12 @@ class loanController {
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }
+
+  static approveOrRejectLoan(req, res) {
+    loanService.approveOrRejectLoan(req.params.id, req.body)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
+  }
 }
 
 export default loanController;
