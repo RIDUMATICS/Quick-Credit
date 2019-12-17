@@ -111,7 +111,7 @@ class loanService {
   static async approveOrRejectLoan(id, { status }) {
     try {
       const loan = await Loan.findByPk(id);
-      if (loan === null) return errorResponse(404, 'Loan not found');
+      if (!loan) return errorResponse(404, 'Loan not found');
       const updatedLoan = await loan.update({
         status,
       });
@@ -123,6 +123,21 @@ class loanService {
       }
 
       return successResponse(200, updatedLoan);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async postLoanRepayment(id) {
+    try {
+      const loan = await Loan.findByPk(id);
+      if (!loan) return errorResponse(404, 'Loan not found');
+      const repayment = await Repayment.create({
+        loanId: id,
+        createdOn: new Date().getTime(),
+        amount: loan.amount,
+      });
+      return successResponse(200, repayment);
     } catch (error) {
       return errorResponse(500, error);
     }
