@@ -1,5 +1,7 @@
 import { Loan, Repayment } from '../models';
 import { successResponse, errorResponse } from '../helper/response';
+import sendMail from './../helper/email';
+import messageTemplate from './../helper/messageTemplate';
 
 class loanService {
   static async createLoan(userEmail, { tenor, amount }) {
@@ -99,6 +101,26 @@ class loanService {
       const loan = await Loan.findByPk(id);
       if (loan === null) return errorResponse(404, 'Loan not found');
       return successResponse(200, loan);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async approveOrRejectLoan(id, { status }) {
+    try {
+      const loan = await Loan.findByPk(id);
+      if (loan === null) return errorResponse(404, 'Loan not found');
+      const updatedLoan = await loan.update({
+        status,
+      });
+
+      if (status === 'approved') {
+        await sendMail(loan.user, 'APPROVAL OF REQUEST FOR LOAN', messageTemplate.loanApproval(loan));
+      } else if (status === 'rejected') {
+        await sendMail(loan.user, 'REJECTION OF REQUEST FOR LOAN', messageTemplate.loanRejection(loan));
+      }
+
+      return successResponse(200, updatedLoan);
     } catch (error) {
       return errorResponse(500, error);
     }
