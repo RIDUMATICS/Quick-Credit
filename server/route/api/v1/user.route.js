@@ -19,4 +19,6 @@ userRouter.get('/auth/logout', passport.authenticate('jwt', { session: false }),
 
 userRouter.patch('/users/:userEmail/verify', passport.authenticate('jwt', { session: false }), checkIsAdmin, userController.verifyUser);
 
+userRouter.patch('/reset-password', passport.authenticate('jwt', { session: false }), userController.resetPassword);
+
 export default userRouter;

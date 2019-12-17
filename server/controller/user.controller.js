@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import userService from '../services/user.service';
 import { successResponse } from '../helper/response';
 import setCookie from '../helper/setCookie';
@@ -31,6 +32,14 @@ const userController = {
 
   verifyUser(req, res) {
     userService.verifyUser(req.params)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.status).send(err));
+  },
+
+  resetPassword(req, res) {
+    // get user email from jwt
+    const { sub } = jwt.decode(req.cookies.jwt_token);
+    userService.resetPassword(sub, req.body)
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.status).send(err));
   },
