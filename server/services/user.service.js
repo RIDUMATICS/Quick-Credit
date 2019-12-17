@@ -53,6 +53,21 @@ class userService {
     const { email, firstName, lastName } = user;
     return successResponse(200, { user: { email, firstName, lastName } });
   }
+
+  static async verifyUser({ userEmail }) {
+    try {
+      userEmail = userEmail.toLowerCase();
+      const user = await User.findByPk(userEmail);
+      if (!user) return errorResponse(404, 'Loan not found');
+
+      const updatedUser = await user.update({
+        status: 'verified',
+      });
+      return successResponse(200, updatedUser);
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
 }
 
 export default userService;

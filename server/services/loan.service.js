@@ -1,14 +1,15 @@
-import { Loan, Repayment } from '../models';
+import { Loan, Repayment, User } from '../models';
 import { successResponse, errorResponse } from '../helper/response';
-import sendMail from './../helper/email';
-import messageTemplate from './../helper/messageTemplate';
+import sendMail from '../helper/email';
+import messageTemplate from '../helper/messageTemplate';
 
 class loanService {
   static async createLoan(userEmail, { tenor, amount }) {
     try {
+      userEmail = userEmail.toLowerCase();
       amount = +amount; // convert string to integer
       tenor = +tenor; // convert string to integer
-
+      const user = await User.findByPk(userEmail);
       const pendingLoan = await Loan.count({
         where: {
           user: userEmail,
@@ -22,6 +23,7 @@ class loanService {
           repaid: false,
         },
       });
+      if (user.status === 'unverified') return errorResponse(400, 'Account has not been verified');
       if (unpaidLoan) return errorResponse(400, 'Still have an unpaid loan');
       if (pendingLoan) return errorResponse(400, 'Still have a pending loan');
       if (tenor > 12 || tenor < 3) return errorResponse(400, 'Tenor is between 3 to 12 months');
@@ -99,7 +101,7 @@ class loanService {
   static async getLoanById({ id }) {
     try {
       const loan = await Loan.findByPk(id);
-      if (loan === null) return errorResponse(404, 'Loan not found');
+      if (!loan) return errorResponse(404, 'Loan not found');
       return successResponse(200, loan);
     } catch (error) {
       return errorResponse(500, error);
