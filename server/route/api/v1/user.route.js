@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Router } from 'express';
 import userController from '../../../controller/user.controller';
 import checkCookieMiddleware from '../../../helper/checkCookieMiddleware';
+import checkIsAdmin from '../../../helper/checkIsAdmin';
 
 
 const userRouter = Router();
@@ -15,5 +16,7 @@ userRouter.post('/oauth/google', checkCookieMiddleware, passport.authenticate('g
 userRouter.post('/oauth/facebook', checkCookieMiddleware, passport.authenticate('facebookToken', { session: false }), userController.socialSign);
 
 userRouter.get('/auth/logout', passport.authenticate('jwt', { session: false }), userController.signOut);
+
+userRouter.patch('/users/:userEmail/verify', passport.authenticate('jwt', { session: false }), checkIsAdmin, userController.verifyUser);
 
 export default userRouter;

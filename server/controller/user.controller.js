@@ -29,6 +29,12 @@ const userController = {
     return res.status(resp.status).json(resp);
   },
 
+  verifyUser(req, res) {
+    userService.verifyUser(req.params)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.status).send(err));
+  },
+
   signOut(req, res) {
     res.clearCookie('jwt_token');
     res.status(204).json(successResponse(204, { success: true }));
