@@ -68,6 +68,27 @@ class userService {
       return errorResponse(500, error);
     }
   }
+
+  static async resetPassword(email, { previousPassword, newPassword }) {
+    try {
+      // check if user exits
+      const user = await User.findByPk(email.toLowerCase());
+      // check if user previousPassword is correct
+      const isMatch = await bcrypt.compare(previousPassword, user.password);
+      if (!isMatch) return errorResponse(401, 'The previous password you entered did not match our records. Please double-check and try again.');
+
+      const salt = await bcrypt.genSalt(+process.env.SALT);
+      newPassword = await bcrypt.hash(newPassword, salt);
+
+      await user.update({
+        password: newPassword,
+      });
+
+      return successResponse(200, 'Successfully Reset Password');
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
 }
 
 export default userService;
