@@ -14,4 +14,6 @@ loanRouter.get('/', passport.authenticate('jwt', { session: false }), checkIsAdm
 loanRouter.get('/:id', passport.authenticate('jwt', { session: false }), checkIsAdmin, loanController.getLoanById);
 // Only Admin can approve or reject a loan application.
 loanRouter.patch('/:id', passport.authenticate('jwt', { session: false }), checkIsAdmin, loanController.approveOrRejectLoan);
+// Only Admin can post loan repayment transaction.
+loanRouter.post('/:id/repayments', passport.authenticate('jwt', { session: false }), checkIsAdmin, loanController.postLoanRepayment);
 export default loanRouter;

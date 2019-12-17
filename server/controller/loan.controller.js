@@ -34,6 +34,12 @@ class loanController {
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }
+
+  static postLoanRepayment(req, res) {
+    loanService.postLoanRepayment(req.params.id)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
+  }
 }
 
 export default loanController;
