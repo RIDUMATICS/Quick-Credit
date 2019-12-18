@@ -21,4 +21,9 @@ userRouter.patch('/users/:userEmail/verify', passport.authenticate('jwt', { sess
 
 userRouter.patch('/reset-password', passport.authenticate('jwt', { session: false }), userController.resetPassword);
 
+userRouter.post('/forgot-password', userController.sendPasswordResetEmail);
+
+userRouter.patch('/forgot-password/:email/:token', userController.receiveNewPassword);
+
+
 export default userRouter;
