@@ -1,7 +1,12 @@
 import { config } from 'dotenv';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { successResponse, errorResponse } from '../helper/response';
 import { User } from '../models';
+import generateToken from '../helper/generateToken';
+import sendMail from '../helper/email';
+import messageTemplate from '../helper/messageTemplate';
+
 
 config();
 
@@ -85,6 +90,36 @@ class userService {
       });
 
       return successResponse(200, 'Successfully Reset Password');
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async sendPasswordResetEmail(email) {
+    try {
+      const token = generateToken({ email }, 3600);
+      // check if user exits
+      const user = await User.findByPk(email.toLowerCase());
+      if (!user) return errorResponse(404, 'The email you entered did not match our records. Please double-check and try again.');
+      const passwordResetUrl = `localhost:3000/password/reset/${token}`;
+      await sendMail(email, 'Reset your Password', messageTemplate.resetPassword(passwordResetUrl));
+      return successResponse(200, 'Message sent successfully');
+    } catch (error) {
+      return errorResponse(500, error);
+    }
+  }
+
+  static async receiveNewPassword({ email, token }, newPassword) {
+    try {
+      email = email.toLowerCase();
+      const payload = jwt.verify(token, process.env.secretOrPrivateKey);
+      if (payload.sub === email) {
+        const user = await User.findByPk(email);
+        const salt = await bcrypt.genSalt(+process.env.SALT);
+        newPassword = await bcrypt.hash(newPassword, salt);
+        await user.update({ password: newPassword });
+      }
+      return successResponse(200, 'Password reset successfully');
     } catch (error) {
       return errorResponse(500, error);
     }

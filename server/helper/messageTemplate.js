@@ -25,6 +25,19 @@ class messageTemplate {
     QuickCredit, Nigeria.</p>
   `;
   }
+
+  static resetPassword(passwordResetUrl) {
+    return `<p>We've received a request to reset your password. If you didn't make the request,
+    just ignore this email. Otherwise, you can reset your password using this link:</p>
+    <a href="https://${passwordResetUrl}" target="_blank"
+    style="background-color: red; 
+    box-shadow: 0 5px 0 darkred;
+    color: white;
+    padding: 1em 1.5em;
+    position: relative;
+    text-decoration: none;">Click here to reset your password</a>
+    `;
+  }
 }
 
 export default messageTemplate;

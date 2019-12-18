@@ -44,6 +44,18 @@ const userController = {
       .catch((err) => res.status(err.status).send(err));
   },
 
+  sendPasswordResetEmail(req, res) {
+    userService.sendPasswordResetEmail(req.body.email)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.status).send(err));
+  },
+
+  receiveNewPassword(req, res) {
+    userService.receiveNewPassword(req.params, req.body.newPassword)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.status).send(err));
+  },
+
   signOut(req, res) {
     res.clearCookie('jwt_token');
     res.status(204).json(successResponse(204, { success: true }));
