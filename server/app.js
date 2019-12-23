@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import express from 'express';
 import { config } from 'dotenv';
 import morgan from 'morgan';
@@ -28,6 +29,6 @@ app.use('/api/v1', userRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/loans', loanRouter);
 
-app.listen(PORT, () => {
+export default app.listen(PORT, () => {
   log(`APP LISTENING ON ${PORT} `);
 });

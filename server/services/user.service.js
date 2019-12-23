@@ -89,7 +89,7 @@ class userService {
         password: newPassword,
       });
 
-      return successResponse(200, 'Successfully Reset Password');
+      return successResponse(200, 'Successfully Reset Password.');
     } catch (error) {
       return errorResponse(500, error);
     }
@@ -103,24 +103,24 @@ class userService {
       if (!user) return errorResponse(404, 'The email you entered did not match our records. Please double-check and try again.');
       const passwordResetUrl = `localhost:3000/password/reset/${token}`;
       await sendMail(email, 'Reset your Password', messageTemplate.resetPassword(passwordResetUrl));
-      return successResponse(200, 'Message sent successfully');
+      return successResponse(200, 'We have e-mailed your password reset link');
     } catch (error) {
       return errorResponse(500, error);
     }
   }
 
-  static async receiveNewPassword({ email, token }, newPassword) {
+  static async receiveNewPassword({ token }, newPassword) {
     try {
-      email = email.toLowerCase();
       const payload = jwt.verify(token, process.env.secretOrPrivateKey);
-      if (payload.sub === email) {
-        const user = await User.findByPk(email);
-        const salt = await bcrypt.genSalt(+process.env.SALT);
-        newPassword = await bcrypt.hash(newPassword, salt);
-        await user.update({ password: newPassword });
-      }
-      return successResponse(200, 'Password reset successfully');
+      const user = await User.findByPk(payload.sub.toLowerCase()); // payload.sub is user email
+      if (!user) return errorResponse(404, 'The email you entered did not match our records. Please double-check and try again.');
+      const salt = await bcrypt.genSalt(+process.env.SALT);
+      newPassword = await bcrypt.hash(newPassword, salt);
+      await user.update({ password: newPassword });
+      return successResponse(200, 'Your password has been reset successfully');
     } catch (error) {
+      if (error.name === 'JsonWebTokenError') return errorResponse(400, 'Invalid reset token');
+      if (error.name === 'TokenExpiredError') return errorResponse(400, 'Expired reset link');
       return errorResponse(500, error);
     }
   }
