@@ -23,7 +23,7 @@ userRouter.patch('/reset-password', passport.authenticate('jwt', { session: fals
 
 userRouter.post('/forgot-password', userController.sendPasswordResetEmail);
 
-userRouter.patch('/forgot-password/:email/:token', userController.receiveNewPassword);
+userRouter.patch('/forgot-password/:token', userController.receiveNewPassword);
 
 
 export default userRouter;
