@@ -15,7 +15,8 @@ const sendMail = async (to, subject, message) => {
     subject,
     html: message,
   };
-  await sgMail.send(msg);
+  // don't send mail in test mode
+  if (!process.env.NODE_ENV === 'test') await sgMail.send(msg);
 };
 
 export default sendMail;

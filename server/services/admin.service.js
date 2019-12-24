@@ -48,7 +48,7 @@ class adminService {
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) return errorResponse(401, 'The email and password you entered did not match our records. Please double-check and try again.');
       const { firstName, lastName } = admin;
-      return successResponse(200, { user: { email: admin.email, firstName, lastName } });
+      return successResponse(200, { admin: { email: admin.email, firstName, lastName } });
     } catch (err) {
       return errorResponse(500, err);
     }

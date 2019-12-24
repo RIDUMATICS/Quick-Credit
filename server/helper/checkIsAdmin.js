@@ -10,7 +10,7 @@ const checkIsAdmin = (req, res, next) => {
       email: sub,
       isAdmin: true,
     },
-  }).then((admin) => (admin ? next() : res.status(401).json(errorResponse(401, 'only admin can access'))))
+  }).then((admin) => (admin ? next() : res.status(401).json(errorResponse(401, 'Only admin can access'))))
     .catch((err) => errorResponse(500, err));
 };
 
