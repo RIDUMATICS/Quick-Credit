@@ -29,6 +29,13 @@ class loanController {
       .catch((err) => res.status(err.json).json(err));
   }
 
+  static getLoanByUser(req, res) {
+    const { sub } = jwt.decode(req.cookies.jwt_token);
+    loanService.getLoanByUser(sub)
+      .then((resp) => res.status(resp.status).json(resp))
+      .catch((err) => res.status(err.json).json(err));
+  }
+
   static approveOrRejectLoan(req, res) {
     loanService.approveOrRejectLoan(req.params.id, req.body)
       .then((resp) => res.status(resp.status).json(resp))
@@ -36,7 +43,7 @@ class loanController {
   }
 
   static postLoanRepayment(req, res) {
-    loanService.postLoanRepayment(req.params.id)
+    loanService.postLoanRepayment(req.params.id, req.body)
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }
