@@ -16,10 +16,10 @@ chai.use(chaiHttp);
 chai.should();
 
 const user = {
-  email: faker.internet.email(),
+  email: 'johndoe@gmail.com',
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  password: faker.internet.password(),
+  password: 'password',
   address: faker.address.streetAddress(),
 };
 
@@ -115,7 +115,6 @@ describe('Loan Route', () => {
         .patch('/api/v1/users/unknownemail@gmail.com/verify')
         .send()
         .end((err, res) => {
-          console.log(res.body);
           res.should.have.status(404);
           res.body.should.be.a('object');
           res.body.should.have.property('status').eql(404);

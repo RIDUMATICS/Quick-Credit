@@ -12,7 +12,9 @@ class loanController {
   }
 
   static getLoanRepayment(req, res) {
-    loanService.getLoanRepayment(req.params)
+    // get user email from jwt
+    const { sub } = jwt.decode(req.cookies.jwt_token);
+    loanService.getLoanRepayment(req.params, sub)
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }

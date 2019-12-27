@@ -48,9 +48,14 @@ class loanService {
     }
   }
 
-  static async getLoanRepayment({ id }) {
+  static async getLoanRepayment({ id }, email) {
     try {
-      const loan = await Loan.findByPk(id);
+      const loan = await Loan.findOne({
+        where: {
+          id,
+          user: email,
+        },
+      });
 
       if (!loan) return errorResponse(404, 'Loan not found'); // check if loan is not valid
 
@@ -60,7 +65,7 @@ class loanService {
         },
       });
 
-      if (!repayment) return errorResponse(400, 'Repayment not submitted');
+      if (!repayment) return errorResponse(404, 'Repayment not found');
 
       const paymentInstallment = repayment.map(({ createdOn, amount }) => ({ createdOn, amount }));
 
@@ -160,7 +165,7 @@ class loanService {
 
       if (!loan) return errorResponse(404, 'Loan not found'); // check if loan is not valid
 
-      if (loan.balance === 0) return errorResponse(400, 'No outstanding payment'); // check if loan is fully paid
+      if (loan.balance === 0) return errorResponse(404, 'No outstanding payment'); // check if loan is fully paid
 
       await loan.update({
         balance: loan.balance - amount,
@@ -172,7 +177,7 @@ class loanService {
         createdOn: new Date().getTime(),
         amount,
       });
-      return successResponse(200, repayment);
+      return successResponse(201, repayment);
     } catch (error) {
       return errorResponse(500, error);
     }
