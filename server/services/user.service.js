@@ -63,12 +63,19 @@ class userService {
     try {
       userEmail = userEmail.toLowerCase();
       const user = await User.findByPk(userEmail);
-      if (!user) return errorResponse(404, 'Loan not found');
+      if (!user) return errorResponse(404, 'The email you entered did not match our records. Please double-check and try again.');
 
       const updatedUser = await user.update({
         status: 'verified',
       });
-      return successResponse(200, updatedUser);
+      const {
+        email, firstName, lastName, address, status,
+      } = updatedUser;
+      return successResponse(200, {
+        user: {
+          email, firstName, lastName, address, status,
+        },
+      });
     } catch (error) {
       return errorResponse(500, error);
     }

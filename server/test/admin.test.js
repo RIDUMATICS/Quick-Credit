@@ -50,19 +50,11 @@ describe('Authentication Route', () => {
       });
     });
 
-    it('should signup a new user', (done) => {
+    before((done) => {
       authUser
         .post('/api/v1/auth/signup')
         .send(user)
-        .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.be.a('object');
-          res.body.should.have.property('status').eql(201);
-          res.body.should.have.property('data').should.be.a('object');
-          res.body.data.should.have.property('user').should.be.a('object');
-          res.body.data.user.should.have.property('email').eql(user.email.toLowerCase());
-          res.body.data.user.should.have.property('firstName').eql(user.firstName);
-          res.body.data.user.should.have.property('lastName').eql(user.lastName);
+        .end(() => {
           done();
         });
     });
