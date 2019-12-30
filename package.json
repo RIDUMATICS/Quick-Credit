@@ -9,7 +9,7 @@
     "db:migrate:undo": "sequelize db:migrate:undo:all",
     "db:reset": "npm run db:migrate:undo && npm run db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run db:reset",
-    "test": "cross-env NODE_ENV=test mocha --require @babel/register ./server/test/*.test.js --exist"
+    "test": "cross-env NODE_ENV=test mocha ./server/test/*.test.js"
   },
   "repository": {
     "type": "git",
