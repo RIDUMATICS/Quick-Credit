@@ -154,7 +154,7 @@ class loanService {
     }
   }
 
-  static async postLoanRepayment(id, { amount }) {
+  static async postLoanRepayment(id) {
     try {
       const loan = await Loan.findOne({
         where: {
@@ -168,14 +168,14 @@ class loanService {
       if (loan.balance === 0) return errorResponse(404, 'No outstanding payment'); // check if loan is fully paid
 
       await loan.update({
-        balance: loan.balance - amount,
-        repaid: loan.balance - amount === 0,
+        balance: loan.balance - loan.paymentInstallment,
+        repaid: loan.balance - loan.paymentInstallment === 0,
       });
 
       const repayment = await Repayment.create({
         loanId: id,
         createdOn: new Date().getTime(),
-        amount,
+        amount: loan.paymentInstallment,
       });
       return successResponse(201, repayment);
     } catch (error) {

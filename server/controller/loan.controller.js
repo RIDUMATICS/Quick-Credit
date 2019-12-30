@@ -45,7 +45,7 @@ class loanController {
   }
 
   static postLoanRepayment(req, res) {
-    loanService.postLoanRepayment(req.params.id, req.body)
+    loanService.postLoanRepayment(req.params.id)
       .then((resp) => res.status(resp.status).json(resp))
       .catch((err) => res.status(err.json).json(err));
   }
