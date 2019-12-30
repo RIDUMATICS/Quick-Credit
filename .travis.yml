@@ -8,7 +8,7 @@ services:
 env:
   global:
   - TEST_DB_USERNAME=postgres
-  - TEST_DB_NAME=QuickCreditTest
+  - TEST_DB_NAME=QuickCredit_Test
   - TEST_DB_HOST=127.0.0.1
   - NODE_ENV=test
 cache:
@@ -17,8 +17,7 @@ cache:
 install:
   - npm install
 before_script:
-  - psql -c 'drop database if exists QuickCreditTest;' -U postgres
-  - psql -c 'create database QuickCreditTest;' -U postgres
+  - psql -c 'create database QuickCredit_Test;' -U postgres
 
 script:
   - npm test
