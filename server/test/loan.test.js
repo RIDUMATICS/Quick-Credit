@@ -65,7 +65,7 @@ describe('Loan Route', () => {
     it('should throw error if an unauthorized user tries to make a loan request', (done) => {
       request(app)
         .post('/api/v1/loans')
-        .send({ tenor: 10, amount: 250000 })
+        .send({ tenor: 1, amount: 250000 })
         .end((err, res) => {
           res.should.have.status(401);
           done();
@@ -75,7 +75,7 @@ describe('Loan Route', () => {
     it('should throw error if an unverified user tries to make a loan request', (done) => {
       authUser
         .post('/api/v1/loans')
-        .send({ tenor: 10, amount: 250000 })
+        .send({ tenor: 1, amount: 250000 })
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');
@@ -158,7 +158,7 @@ describe('Loan Route', () => {
     });
 
     it('should create a new loan record', (done) => {
-      const newLoan = { tenor: 10, amount: 250000 };
+      const newLoan = { tenor: 1, amount: 250000 };
       authUser
         .post('/api/v1/loans')
         .send(newLoan)
@@ -187,7 +187,7 @@ describe('Loan Route', () => {
     it('should throw error if user have a pending loan and try to request a new loan', (done) => {
       authUser
         .post('/api/v1/loans')
-        .send({ tenor: 10, amount: 250000 })
+        .send({ tenor: 1, amount: 250000 })
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');
@@ -292,7 +292,7 @@ describe('Loan Route', () => {
     it('should throw error if user have a unpaid loan and try to request a new loan', (done) => {
       authUser
         .post('/api/v1/loans')
-        .send({ tenor: 10, amount: 250000 })
+        .send({ tenor: 1, amount: 250000 })
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');

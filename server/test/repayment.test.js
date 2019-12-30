@@ -61,7 +61,6 @@ describe('Loan Route', () => {
     it('should throw error if an unauthorized user try to post loan repayment', (done) => {
       request(app)
         .post('/api/v1/loans/1/repayments')
-        .send({ amount: 250000 })
         .end((err, res) => {
           res.should.have.status(401);
           done();
@@ -71,7 +70,6 @@ describe('Loan Route', () => {
     it('should throw error if non-admin try to post loan repayment', (done) => {
       authUser
         .post('/api/v1/loans/1/repayments')
-        .send({ amount: 250000 })
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -85,7 +83,6 @@ describe('Loan Route', () => {
     it('should throw error if loanId is not found', (done) => {
       authAdmin
         .post('/api/v1/loans/1001/repayments')
-        .send({ amount: 250000 })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -99,7 +96,6 @@ describe('Loan Route', () => {
     it('should post loan repayment transaction', (done) => {
       authAdmin
         .post('/api/v1/loans/1/repayments')
-        .send({ amount: 262500 })
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
@@ -113,7 +109,6 @@ describe('Loan Route', () => {
     it('should throw error if there is no outstanding payment', (done) => {
       authAdmin
         .post('/api/v1/loans/1/repayments')
-        .send({ amount: 250000 })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
