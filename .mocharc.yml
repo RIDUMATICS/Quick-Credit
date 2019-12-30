@@ -1,0 +1,8 @@
+extension:
+  - js
+recursive:
+  - true
+require: ['@babel/register']
+reporter: spec
+timeout: 2000
+exit: true
