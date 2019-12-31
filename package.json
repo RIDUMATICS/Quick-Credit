@@ -4,12 +4,13 @@
   "description": "Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.",
   "main": "index.js",
   "scripts": {
+    "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
     "dev-start": "nodemon --exec babel-node server/app.js",
     "db:migrate": "sequelize db:migrate",
     "db:migrate:undo": "sequelize db:migrate:undo:all",
     "db:reset": "npm run db:migrate:undo && npm run db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run db:reset",
-    "test": "cross-env NODE_ENV=test mocha ./server/test/*.test.js"
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha ./server/test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -57,6 +58,7 @@
     "@babel/register": "7.7.4",
     "chai": "4.2.0",
     "chai-http": "4.3.0",
+    "coveralls": "3.0.9",
     "cross-env": "6.0.3",
     "eslint": "6.7.2",
     "eslint-config-airbnb-base": "14.0.0",
@@ -64,6 +66,7 @@
     "faker": "4.1.0",
     "mocha": "6.2.2",
     "nodemon": "2.0.1",
+    "nyc": "15.0.0",
     "supertest": "4.0.2"
   }
 }
