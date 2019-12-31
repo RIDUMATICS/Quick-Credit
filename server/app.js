@@ -12,7 +12,7 @@ import passportConfig from './config/passport';
 import userRouter from './route/api/v1/user.route';
 import adminRouter from './route/api/v1/admin.route';
 import loanRouter from './route/api/v1/loan.route';
-import swaggerDocument from './swagger.json';
+import swaggerDocument from '../swagger.json';
 
 config();
 const app = express();
