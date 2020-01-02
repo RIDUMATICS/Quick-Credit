@@ -1,0 +1,28 @@
+{
+  "name": "quick-credit-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel ./index.html",
+    "build": "parcel build ./index.html"
+  },
+  "keywords": [],
+  "author": "Ridwan Onikoyi <ridwanonikoyi@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/polyfill": "7.7.0",
+    "bootstrap": "4.4.1",
+    "node-sass": "4.13.0",
+    "react": "16.12.0",
+    "react-bootstrap": "1.0.0-beta.16",
+    "react-dom": "16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.7.7",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "@babel/preset-env": "7.7.7",
+    "@babel/preset-react": "7.7.4",
+    "parcel-bundler": "1.12.4"
+  }
+}

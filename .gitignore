@@ -1,4 +1,5 @@
 node_modules
+/frontend/node_modules
 .env
 
 # Coverage directory used by tools like istanbul
@@ -8,3 +9,10 @@ coverage
 .nyc_output
 
 build
+frontend/build
+
+.cache
+/frontend/.cache
+
+dist
+/frontend/dist
